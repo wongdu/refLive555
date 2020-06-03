@@ -20,7 +20,7 @@ along with this library; if not, write to the Free Software Foundation, Inc.,
 
 #include "FramedSource.hh"
 #include <stdlib.h>
-
+#include <iostream>
 ////////// FramedSource //////////
 
 FramedSource::FramedSource(UsageEnvironment& env)
@@ -29,9 +29,11 @@ FramedSource::FramedSource(UsageEnvironment& env)
     fOnCloseFunc(NULL), fOnCloseClientData(NULL),
     fIsCurrentlyAwaitingData(False) {
   fPresentationTime.tv_sec = fPresentationTime.tv_usec = 0; // initially
+  std::cout << "FramedSource::FramedSource" << std::endl;
 }
 
 FramedSource::~FramedSource() {
+	std::cout << "FramedSource::~FramedSource" << std::endl;
 }
 
 Boolean FramedSource::isFramedSource() const {

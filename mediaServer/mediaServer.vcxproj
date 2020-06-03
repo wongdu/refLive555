@@ -51,7 +51,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;NO_OPENSSL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;NO_OPENSSL;_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\liveMedia\include;..\BasicUsageEnvironment\include;..\groupsock\include;..\UsageEnvironment\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -84,9 +84,11 @@
   <ItemGroup>
     <ClCompile Include="DynamicRTSPServer.cpp" />
     <ClCompile Include="live555MediaServer.cpp" />
+    <ClCompile Include="reg_exp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DynamicRTSPServer.hh" />
+    <ClInclude Include="reg_exp.h" />
     <ClInclude Include="version.hh" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

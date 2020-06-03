@@ -737,89 +737,89 @@ void RTSPServer::RTSPClientConnection::handleRequestBytes(int newBytesRead) {
       // Handle the specified command (beginning with commands that are session-independent):
       fCurrentCSeq = cseq;
       if (strcmp(cmdName, "OPTIONS") == 0) {
-	// If the "OPTIONS" command included a "Session:" id for a session that doesn't exist,
-	// then treat this as an error:
-	if (requestIncludedSessionId && clientSession == NULL) {
-#ifdef DEBUG
-	  fprintf(stderr, "Calling handleCmd_sessionNotFound() (case 1)\n");
-#endif
-	  handleCmd_sessionNotFound();
-	} else {
-	  // Normal case:
-	  handleCmd_OPTIONS();
-	}
+			// If the "OPTIONS" command included a "Session:" id for a session that doesn't exist,
+			// then treat this as an error:
+			if (requestIncludedSessionId && clientSession == NULL) {
+		#ifdef DEBUG
+			  fprintf(stderr, "Calling handleCmd_sessionNotFound() (case 1)\n");
+		#endif
+			  handleCmd_sessionNotFound();
+			} else {
+			  // Normal case:
+			  handleCmd_OPTIONS();
+			}
       } else if (urlPreSuffix[0] == '\0' && urlSuffix[0] == '*' && urlSuffix[1] == '\0') {
-	// The special "*" URL means: an operation on the entire server.  This works only for GET_PARAMETER and SET_PARAMETER:
-	if (strcmp(cmdName, "GET_PARAMETER") == 0) {
-	  handleCmd_GET_PARAMETER((char const*)fRequestBuffer);
-	} else if (strcmp(cmdName, "SET_PARAMETER") == 0) {
-	  handleCmd_SET_PARAMETER((char const*)fRequestBuffer);
-	} else {
-	  handleCmd_notSupported();
-	}
+			// The special "*" URL means: an operation on the entire server.  This works only for GET_PARAMETER and SET_PARAMETER:
+			if (strcmp(cmdName, "GET_PARAMETER") == 0) {
+			  handleCmd_GET_PARAMETER((char const*)fRequestBuffer);
+			} else if (strcmp(cmdName, "SET_PARAMETER") == 0) {
+			  handleCmd_SET_PARAMETER((char const*)fRequestBuffer);
+			} else {
+			  handleCmd_notSupported();
+			}
       } else if (strcmp(cmdName, "DESCRIBE") == 0) {
-	handleCmd_DESCRIBE(urlPreSuffix, urlSuffix, (char const*)fRequestBuffer);
+			handleCmd_DESCRIBE(urlPreSuffix, urlSuffix, (char const*)fRequestBuffer);
       } else if (strcmp(cmdName, "SETUP") == 0) {
-	Boolean areAuthenticated = True;
+			Boolean areAuthenticated = True;
 
-	if (!requestIncludedSessionId) {
-	  // No session id was present in the request.
-	  // So create a new "RTSPClientSession" object for this request.
+			if (!requestIncludedSessionId) {
+			  // No session id was present in the request.
+			  // So create a new "RTSPClientSession" object for this request.
 
-	  // But first, make sure that we're authenticated to perform this command:
-	  char urlTotalSuffix[2*RTSP_PARAM_STRING_MAX];
-	      // enough space for urlPreSuffix/urlSuffix'\0'
-	  urlTotalSuffix[0] = '\0';
-	  if (urlPreSuffix[0] != '\0') {
-	    strcat(urlTotalSuffix, urlPreSuffix);
-	    strcat(urlTotalSuffix, "/");
-	  }
-	  strcat(urlTotalSuffix, urlSuffix);
-	  if (authenticationOK("SETUP", urlTotalSuffix, (char const*)fRequestBuffer)) {
-	    clientSession
-	      = (RTSPServer::RTSPClientSession*)fOurRTSPServer.createNewClientSessionWithId();
-	  } else {
-	    areAuthenticated = False;
-	  }
-	}
-	if (clientSession != NULL) {
-	  clientSession->handleCmd_SETUP(this, urlPreSuffix, urlSuffix, (char const*)fRequestBuffer);
-	  playAfterSetup = clientSession->fStreamAfterSETUP;
-	} else if (areAuthenticated) {
-#ifdef DEBUG
-	  fprintf(stderr, "Calling handleCmd_sessionNotFound() (case 2)\n");
-#endif
-	  handleCmd_sessionNotFound();
-	}
+			  // But first, make sure that we're authenticated to perform this command:
+			  char urlTotalSuffix[2*RTSP_PARAM_STRING_MAX];
+				  // enough space for urlPreSuffix/urlSuffix'\0'
+			  urlTotalSuffix[0] = '\0';
+			  if (urlPreSuffix[0] != '\0') {
+				strcat(urlTotalSuffix, urlPreSuffix);
+				strcat(urlTotalSuffix, "/");
+			  }
+			  strcat(urlTotalSuffix, urlSuffix);
+			  if (authenticationOK("SETUP", urlTotalSuffix, (char const*)fRequestBuffer)) {
+				clientSession
+				  = (RTSPServer::RTSPClientSession*)fOurRTSPServer.createNewClientSessionWithId();
+			  } else {
+				areAuthenticated = False;
+			  }
+			}
+			if (clientSession != NULL) {
+			  clientSession->handleCmd_SETUP(this, urlPreSuffix, urlSuffix, (char const*)fRequestBuffer);
+			  playAfterSetup = clientSession->fStreamAfterSETUP;
+			} else if (areAuthenticated) {
+		#ifdef DEBUG
+			  fprintf(stderr, "Calling handleCmd_sessionNotFound() (case 2)\n");
+		#endif
+			  handleCmd_sessionNotFound();
+			}
       } else if (strcmp(cmdName, "TEARDOWN") == 0
 		 || strcmp(cmdName, "PLAY") == 0
 		 || strcmp(cmdName, "PAUSE") == 0
 		 || strcmp(cmdName, "GET_PARAMETER") == 0
 		 || strcmp(cmdName, "SET_PARAMETER") == 0) {
-	if (clientSession != NULL) {
-	  clientSession->handleCmd_withinSession(this, cmdName, urlPreSuffix, urlSuffix, (char const*)fRequestBuffer);
-	} else {
-#ifdef DEBUG
-	  fprintf(stderr, "Calling handleCmd_sessionNotFound() (case 3)\n");
-#endif
-	  handleCmd_sessionNotFound();
-	}
+			if (clientSession != NULL) {
+			  clientSession->handleCmd_withinSession(this, cmdName, urlPreSuffix, urlSuffix, (char const*)fRequestBuffer);
+			} else {
+		#ifdef DEBUG
+			  fprintf(stderr, "Calling handleCmd_sessionNotFound() (case 3)\n");
+		#endif
+			  handleCmd_sessionNotFound();
+			}
       } else if (strcmp(cmdName, "REGISTER") == 0 || strcmp(cmdName, "DEREGISTER") == 0) {
-	// Because - unlike other commands - an implementation of this command needs
-	// the entire URL, we re-parse the command to get it:
-	char* url = strDupSize((char*)fRequestBuffer);
-	if (sscanf((char*)fRequestBuffer, "%*s %s", url) == 1) {
-	  // Check for special command-specific parameters in a "Transport:" header:
-	  Boolean reuseConnection, deliverViaTCP;
-	  char* proxyURLSuffix;
-	  parseTransportHeaderForREGISTER((const char*)fRequestBuffer, reuseConnection, deliverViaTCP, proxyURLSuffix);
+			// Because - unlike other commands - an implementation of this command needs
+			// the entire URL, we re-parse the command to get it:
+			char* url = strDupSize((char*)fRequestBuffer);
+			if (sscanf((char*)fRequestBuffer, "%*s %s", url) == 1) {
+			  // Check for special command-specific parameters in a "Transport:" header:
+			  Boolean reuseConnection, deliverViaTCP;
+			  char* proxyURLSuffix;
+			  parseTransportHeaderForREGISTER((const char*)fRequestBuffer, reuseConnection, deliverViaTCP, proxyURLSuffix);
 
-	  handleCmd_REGISTER(cmdName, url, urlSuffix, (char const*)fRequestBuffer, reuseConnection, deliverViaTCP, proxyURLSuffix);
-	  delete[] proxyURLSuffix;
-	} else {
-	  handleCmd_bad();
-	}
-	delete[] url;
+			  handleCmd_REGISTER(cmdName, url, urlSuffix, (char const*)fRequestBuffer, reuseConnection, deliverViaTCP, proxyURLSuffix);
+			  delete[] proxyURLSuffix;
+			} else {
+			  handleCmd_bad();
+			}
+			delete[] url;
       } else {
 	// The command is one that we don't handle:
 	handleCmd_notSupported();
