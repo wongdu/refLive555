@@ -1,0 +1,35 @@
+#!/bin/bash
+
+export KERNEL=`uname -s | tr A-Z a-z`;
+export ANDROID_HOME=$HOME/Library/Android/sdk;
+export NDK_ROOT=$HOME/android-ndk-r10e;
+export TOOLCHAINS_ROOT=$NDK_ROOT/toolchains/arm-linux-androideabi-4.8/prebuilt/darwin-x86_64;
+export TOOLCHAINS_PREFIX=$TOOLCHAINS_ROOT/arm-linux-androideabi-g++;
+export TOOLCHAINS_INCLUDE=$TOOLCHAINS_ROOT/lib/gcc/arm-linux-androideabi/4.8/include-fixed;
+
+export NDK_STD_INCLUDE=$NDK_ROOT/sources/cxx-stl/gnu-libstdc++/4.8/include;
+export NDK_STD_ARM_INCLUDE=$NDK_ROOT/sources/cxx-stl/gnu-libstdc++/4.8/libs/armeabi-v7a/include;
+
+export PLATFROM_ROOT=$NDK_ROOT/platforms/android-9/arch-arm;
+export PLATFROM_INCLUDE=$PLATFROM_ROOT/usr/include;
+export PLATFROM_LIB=$PLATFROM_ROOT/usr/lib;
+
+export GA_ANDROID=1;
+export PATH=$ANDROID_HOME/tools:$NDK_ROOT:$TOOLCHAINS_ROOT/bin:$PATH;
+
+if [ -z "$TOOLCHAIN_ARCH" ]; then
+	export TOOLCHAIN_ARCH=arm
+	export TOOLCHAIN_ABI=armeabi-v7a
+fi
+if [ -z "$TOOLCHAIN_ABI" ]; then
+	case $TOOLCHAIN_ARCH in
+	arm)	TOOLCHAIN_ABI=armeavi-v7a
+		;;
+	x86)	TOOLCHAIN_ABI=x86
+		;;
+	*)	echo "*** No TOOLCHAIN_ABI provided ***"
+		;;
+	esac
+fi
+
+

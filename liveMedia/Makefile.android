@@ -1,0 +1,62 @@
+INCLUDES = -Iinclude -IliveMedia/include -I../groupsock/include -I../BasicUsageEnvironment/include -I../UsageEnvironment/include -I../../srt/include
+PREFIX = /usr/local
+LIBDIR = $(PREFIX)/lib
+##### Change the following for your environment:
+CROSS_COMPILE?=		arm-linux-androideabi-
+COMPILE_OPTS = $(INCLUDES) -I$(TOOLCHAINS_INCLUDE) -I$(PLATFROM_INCLUDE) -I$(NDK_STD_INCLUDE) -I$(NDK_STD_ARM_INCLUDE) -I. -O2 -DSOCKLEN_T=socklen_t -DNO_SSTREAM=1 -D_LARGEFILE_SOURCE=1 -D_FILE_OFFSET_BITS=64 -DLOCALE_NOT_USED -DANDROID=1
+C =			c
+C_COMPILER =		$(CROSS_COMPILE)gcc
+C_FLAGS =		$(COMPILE_OPTS)
+CPP =			cpp
+CPLUSPLUS_COMPILER =	$(CROSS_COMPILE)g++
+CPLUSPLUS_FLAGS =	$(COMPILE_OPTS) -Wall -DBSD=1
+OBJ =			o
+LINK =			$(CROSS_COMPILE)g++ -o
+LINK_OPTS =		
+CONSOLE_LINK_OPTS =	$(LINK_OPTS)
+LIBRARY_LINK =		$(CROSS_COMPILE)ar cr 
+LIBRARY_LINK_OPTS =	$(LINK_OPTS)
+LIB_SUFFIX =			a
+LIBS_FOR_CONSOLE_APPLICATION =
+LIBS_FOR_GUI_APPLICATION =
+EXE =
+DESTDIR = ../lib/armeabi-v7a
+INSTALL2 = install_static_libraries
+##### End of variables to change
+
+NAME = libliveMedia
+LIBLIVEMEDIA_LIB = $(NAME).$(LIB_SUFFIX)
+ALL = $(LIBLIVEMEDIA_LIB)
+all:	$(ALL)
+
+.$(C).$(OBJ):
+	$(C_COMPILER) -c $(C_FLAGS) $<
+.$(CPP).$(OBJ):
+	$(CPLUSPLUS_COMPILER) -c $(CPLUSPLUS_FLAGS) $<
+
+LIVEMEDIA_OBJ=AC3AudioFileServerMediaSubsession.$(OBJ) AC3AudioRTPSink.$(OBJ) AC3AudioRTPSource.$(OBJ) AC3AudioStreamFramer.$(OBJ) ADTSAudioFileServerMediaSubsession.$(OBJ) ADTSAudioFileSource.$(OBJ) AMRAudioFileServerMediaSubsession.$(OBJ) AMRAudioFileSink.$(OBJ) AMRAudioFileSource.$(OBJ) AMRAudioRTPSink.$(OBJ) AMRAudioRTPSource.$(OBJ) AMRAudioSource.$(OBJ) AudioInputDevice.$(OBJ) AudioRTPSink.$(OBJ) AVIFileSink.$(OBJ) Base64.$(OBJ) BasicUDPSink.$(OBJ) BasicUDPSource.$(OBJ) BitVector.$(OBJ) ByteStreamFileSource.$(OBJ) ByteStreamMemoryBufferSource.$(OBJ) ByteStreamMultiFileSource.$(OBJ) DeviceSource.$(OBJ) DigestAuthentication.$(OBJ) DVVideoFileServerMediaSubsession.$(OBJ) DVVideoRTPSink.$(OBJ) DVVideoRTPSource.$(OBJ) DVVideoStreamFramer.$(OBJ) EBMLNumber.$(OBJ) FileServerMediaSubsession.$(OBJ) FileSink.$(OBJ) FramedFileSource.$(OBJ) FramedFilter.$(OBJ) FramedSource.$(OBJ) GenericMediaServer.$(OBJ) GSMAudioRTPSink.$(OBJ) H261VideoRTPSource.$(OBJ) H263plusVideoFileServerMediaSubsession.$(OBJ) H263plusVideoRTPSink.$(OBJ) H263plusVideoRTPSource.$(OBJ) H263plusVideoStreamFramer.$(OBJ) H263plusVideoStreamParser.$(OBJ) H264or5VideoFileSink.$(OBJ) H264or5VideoRTPSink.$(OBJ) H264or5VideoStreamDiscreteFramer.$(OBJ) H264or5VideoStreamFramer.$(OBJ) H264VideoFileServerMediaSubsession.$(OBJ) H264VideoFileSink.$(OBJ) H264VideoRTPSink.$(OBJ) H264VideoRTPSource.$(OBJ) H264VideoStreamDiscreteFramer.$(OBJ) H264VideoStreamFramer.$(OBJ) H265VideoFileServerMediaSubsession.$(OBJ) H265VideoFileSink.$(OBJ) H265VideoRTPSink.$(OBJ) H265VideoRTPSource.$(OBJ) H265VideoStreamDiscreteFramer.$(OBJ) H265VideoStreamFramer.$(OBJ) HLSSegmenter.$(OBJ) InputFile.$(OBJ) JPEG2000VideoRTPSink.$(OBJ) JPEG2000VideoRTPSource.$(OBJ) JPEGVideoRTPSink.$(OBJ) JPEGVideoRTPSource.$(OBJ) JPEGVideoSource.$(OBJ) Locale.$(OBJ) MatroskaDemuxedTrack.$(OBJ) MatroskaFile.$(OBJ) MatroskaFileParser.$(OBJ) MatroskaFileServerDemux.$(OBJ) MatroskaFileServerMediaSubsession.$(OBJ) Media.$(OBJ) MediaSession.$(OBJ) MediaSink.$(OBJ) MediaSource.$(OBJ) MP3ADU.$(OBJ) MP3ADUdescriptor.$(OBJ) MP3ADUinterleaving.$(OBJ) MP3ADURTPSink.$(OBJ) MP3ADURTPSource.$(OBJ) MP3ADUTranscoder.$(OBJ) MP3AudioFileServerMediaSubsession.$(OBJ) MP3AudioMatroskaFileServerMediaSubsession.$(OBJ) MP3FileSource.$(OBJ) MP3Internals.$(OBJ) MP3InternalsHuffman.$(OBJ) MP3InternalsHuffmanTable.$(OBJ) MP3StreamState.$(OBJ) MP3Transcoder.$(OBJ) MPEG1or2AudioRTPSink.$(OBJ) MPEG1or2AudioRTPSource.$(OBJ) MPEG1or2AudioStreamFramer.$(OBJ) MPEG1or2Demux.$(OBJ) MPEG1or2DemuxedElementaryStream.$(OBJ) MPEG1or2DemuxedServerMediaSubsession.$(OBJ) MPEG1or2FileServerDemux.$(OBJ) MPEG1or2VideoFileServerMediaSubsession.$(OBJ) MPEG1or2VideoRTPSink.$(OBJ) MPEG1or2VideoRTPSource.$(OBJ) MPEG1or2VideoStreamDiscreteFramer.$(OBJ) MPEG1or2VideoStreamFramer.$(OBJ) MPEG2IndexFromTransportStream.$(OBJ) MPEG2TransportFileServerMediaSubsession.$(OBJ) MPEG2TransportStreamAccumulator.$(OBJ) MPEG2TransportStreamDemux.$(OBJ) MPEG2TransportStreamDemuxedTrack.$(OBJ) MPEG2TransportStreamFramer.$(OBJ) MPEG2TransportStreamFromESSource.$(OBJ) MPEG2TransportStreamFromPESSource.$(OBJ) MPEG2TransportStreamIndexFile.$(OBJ) MPEG2TransportStreamMultiplexor.$(OBJ) MPEG2TransportStreamParser.$(OBJ) MPEG2TransportStreamParser_PAT.$(OBJ) MPEG2TransportStreamParser_PMT.$(OBJ) MPEG2TransportStreamParser_STREAM.$(OBJ) MPEG2TransportStreamTrickModeFilter.$(OBJ) MPEG2TransportUDPServerMediaSubsession.$(OBJ) MPEG4ESVideoRTPSink.$(OBJ) MPEG4ESVideoRTPSource.$(OBJ) MPEG4GenericRTPSink.$(OBJ) MPEG4GenericRTPSource.$(OBJ) MPEG4LATMAudioRTPSink.$(OBJ) MPEG4LATMAudioRTPSource.$(OBJ) MPEG4VideoFileServerMediaSubsession.$(OBJ) MPEG4VideoStreamDiscreteFramer.$(OBJ) MPEG4VideoStreamFramer.$(OBJ) MPEGVideoStreamFramer.$(OBJ) MPEGVideoStreamParser.$(OBJ) MultiFramedRTPSink.$(OBJ) MultiFramedRTPSource.$(OBJ) OggDemuxedTrack.$(OBJ) OggFile.$(OBJ) OggFileParser.$(OBJ) OggFileServerDemux.$(OBJ) OggFileServerMediaSubsession.$(OBJ) OggFileSink.$(OBJ) OnDemandServerMediaSubsession.$(OBJ) ourMD5.$(OBJ) OutputFile.$(OBJ) PassiveServerMediaSubsession.$(OBJ) ProxyServerMediaSession.$(OBJ) QCELPAudioRTPSource.$(OBJ) QuickTimeFileSink.$(OBJ) QuickTimeGenericRTPSource.$(OBJ) RawVideoRTPSink.$(OBJ) RawVideoRTPSource.$(OBJ) RTCP.$(OBJ) rtcp_from_spec.$(OBJ) RTPInterface.$(OBJ) RTPSink.$(OBJ) RTPSource.$(OBJ) RTSPClient.$(OBJ) RTSPCommon.$(OBJ) RTSPRegisterSender.$(OBJ) RTSPServer.$(OBJ) RTSPServerRegister.$(OBJ) RTSPServerSupportingHTTPStreaming.$(OBJ) ServerMediaSession.$(OBJ) SimpleRTPSink.$(OBJ) SimpleRTPSource.$(OBJ) SIPClient.$(OBJ) StreamParser.$(OBJ) StreamReplicator.$(OBJ) T140TextRTPSink.$(OBJ) TCPStreamSink.$(OBJ) TextRTPSink.$(OBJ) TheoraVideoRTPSink.$(OBJ) TheoraVideoRTPSource.$(OBJ) uLawAudioFilter.$(OBJ) VideoRTPSink.$(OBJ) VorbisAudioRTPSink.$(OBJ) VorbisAudioRTPSource.$(OBJ) VP8VideoRTPSink.$(OBJ) VP8VideoRTPSource.$(OBJ) VP9VideoRTPSink.$(OBJ) VP9VideoRTPSource.$(OBJ) WAVAudioFileServerMediaSubsession.$(OBJ) WAVAudioFileSource.$(OBJ)
+
+LIVEMEDIA_LIB_OBJS = $(LIVEMEDIA_OBJ)
+
+$(LIBLIVEMEDIA_LIB): $(LIVEMEDIA_OBJ) \
+    $(PLATFORM_SPECIFIC_LIB_OBJS)
+	$(LIBRARY_LINK)$@ $(LIBRARY_LINK_OPTS) \
+		$(LIVEMEDIA_OBJ)
+
+clean:
+	-rm -rf *.$(OBJ) $(ALL) core *.core *~ include/*~
+
+#install: install1 $(INSTALL2)
+install: $(INSTALL2)
+install1: $(LIBLIVEMEDIA_LIB)
+	 install -d $(DESTDIR)$(PREFIX)/include/liveMedia $(DESTDIR)$(LIBDIR)
+	 install -m 644 include/*.hh $(DESTDIR)$(PREFIX)/include/liveMedia
+	 install -m 644 $(LIBLIVEMEDIA_LIB) $(DESTDIR)$(LIBDIR)
+install_shared_libraries: $(LIBliveMedia_LIB)
+	 ln -fs $(NAME).$(LIB_SUFFIX) $(DESTDIR)$(LIBDIR)/$(NAME).$(SHORT_LIB_SUFFIX)
+	 ln -fs $(NAME).$(LIB_SUFFIX) $(DESTDIR)$(LIBDIR)/$(NAME).so
+install_static_libraries:
+	mkdir -p $(DESTDIR)
+	cp $(LIBLIVEMEDIA_LIB) $(DESTDIR)/$(LIBLIVEMEDIA_LIB)
+
+##### Any additional, platform-specific rules come here:
