@@ -20,6 +20,7 @@ along with this library; if not, write to the Free Software Foundation, Inc.,
 // client application.  For a full-featured RTSP client application - with much more functionality, and many options - see
 // "openRTSP": http://www.live555.com/openRTSP/
 
+#include <iostream>
 #include "liveMedia.hh"
 #include "BasicUsageEnvironment.hh"
 
@@ -63,21 +64,34 @@ void usage(UsageEnvironment& env, char const* progName) {
 
 char eventLoopWatchVariable = 0;
 
+static TaskToken fVideoInfoDelayCheckTask = NULL;
+static void VideoInfoDelayCheckReport(void *){
+	fVideoInfoDelayCheckTask = NULL;
+	//env << "Usage: VideoInfoDelayCheckReport ";
+	std::cout << "Usage: VideoInfoDelayCheckReport" << std::endl;
+}
+
 int main(int argc, char** argv) {
   // Begin by setting up our usage environment:
   TaskScheduler* scheduler = BasicTaskScheduler::createNew();
   UsageEnvironment* env = BasicUsageEnvironment::createNew(*scheduler);
 
   // We need at least one "rtsp://" URL argument:
-  if (argc < 2) {
-    usage(*env, argv[0]);
-    return 1;
-  }
+  //if (argc < 2) {
+  //  usage(*env, argv[0]);
+  //  return 1;
+  //}
 
-  // There are argc-1 URLs: argv[1] through argv[argc-1].  Open and start streaming each one:
-  for (int i = 1; i <= argc-1; ++i) {
-    openURL(*env, argv[0], argv[i]);
-  }
+  //// There are argc-1 URLs: argv[1] through argv[argc-1].  Open and start streaming each one:
+  //for (int i = 1; i <= argc-1; ++i) {
+  //  openURL(*env, argv[0], argv[i]);
+  //}
+
+  //rtsp://192.168.11.117:8554/desktop
+  openURL(*env, argv[0], "rtsp://192.168.11.117:8554/desktop");
+  env->taskScheduler().rescheduleDelayedTask(fVideoInfoDelayCheckTask,
+	  1.5 * 1000000,
+	  (TaskFunc*)VideoInfoDelayCheckReport, NULL);
 
   // All subsequent activity takes place within the event loop:
   env->taskScheduler().doEventLoop(&eventLoopWatchVariable);
