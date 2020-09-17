@@ -3,3 +3,4 @@ refLive555.sdf
 refLive555.sln
 *.suo
 Debug
+mediaServer/mediaServer.vcxproj.user

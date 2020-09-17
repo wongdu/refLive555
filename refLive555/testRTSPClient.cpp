@@ -88,7 +88,7 @@ int main(int argc, char** argv) {
   //}
 
   //rtsp://192.168.11.117:8554/desktop
-  openURL(*env, argv[0], "rtsp://192.168.11.117:8554/desktop");
+  openURL(*env, argv[0], "rtsp://192.168.12.100:8554/desktop");
   env->taskScheduler().rescheduleDelayedTask(fVideoInfoDelayCheckTask,
 	  1.5 * 1000000,
 	  (TaskFunc*)VideoInfoDelayCheckReport, NULL);
